@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
 const TodoSchema = new mongoose.Schema({
   title: {
@@ -9,9 +9,14 @@ const TodoSchema = new mongoose.Schema({
   completed: {
     type: Boolean,
     default: false,
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
   }
-}, { timestamps: true });
+}, { timestamps: true});
 
-const Todo = mongoose.model("Todo", TodoSchema);
+const Todo = mongoose.model('Todo', TodoSchema);
 
 export default Todo;

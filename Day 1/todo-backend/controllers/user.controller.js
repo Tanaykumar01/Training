@@ -12,7 +12,7 @@ const generateAccessAndRefereshTokens = async (userId) => {
 
         return { accessToken, refreshToken };
     } catch (error) {
-        throw new ApiError(500, "Error while generating tokens");
+        throw error;
     }
 }
 
@@ -22,7 +22,8 @@ const registerUser = async (req, res) => {
         if (!name || !email || !password) {
             return res.status(400).json({ message: "All fields are required" });
         }
-        if (User.findOne({ email })) {
+        const alreadyUser = await User.findOne({ email });
+        if (alreadyUser) {
             return res.status(400).json({ message: "User already exists" });
         }
         const user = await User.create({ name, email, password });
@@ -48,7 +49,7 @@ const loginUser = async (req, res) => {
             return res.status(400).json({ message: "All fields are required" });
         }
         const user = await User.findOne({
-            $or: [{ email }, { username }]
+            email:email
         });
         if (!user) {
             return res.status(400).json({ message: "User does not exist" });
