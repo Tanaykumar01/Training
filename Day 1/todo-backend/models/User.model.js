@@ -28,4 +28,25 @@ UserSchema.pre('save', async function (next) {
   next();
 });
 
-module.exports = mongoose.model('User', UserSchema);
+UserSchema.methods.isPasswordCorrect = async function (password){
+    return bcrypt.compareSync(password , this.password);
+}
+
+UserSchema.methods.generateAccessToken = function(){
+    return jwt.sign({
+        _id : this._id,
+        email : this.email,
+        username : this.username,
+        fullName : this.fullName
+    } , process.env.ACCESS_TOKEN_SECRET , {expiresIn : process.env.ACCESS_TOKEN_EXPIRY});
+}
+
+UserSchema.methods.generateRefreshToken = function(){
+    return jwt.sign({
+        _id : this._id
+    } , process.env.REFRESH_TOKEN_SECRET , {expiresIn : process.env.REFRESH_TOKEN_EXPIRY});
+}
+
+const User = mongoose.model('User', UserSchema);
+
+export default User;
