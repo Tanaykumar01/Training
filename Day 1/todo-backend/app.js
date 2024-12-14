@@ -39,7 +39,7 @@ app.use(
 import userRoutes from './routes/user.routes.js';
 
 // use routes
-app.use('/api/user', userRoutes);
+app.use('/api/v1/user', userRoutes);
 
 
 export { app };
