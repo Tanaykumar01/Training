@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 import logger from './utils/logger.js';
-
+import helmet from 'helmet';
 
 
 const app = express();
@@ -16,6 +16,8 @@ app.use(cors(
 ));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(helmet())
 
 const morganFormat = ":method :url :status :response-time ms";
 
